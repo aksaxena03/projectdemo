@@ -20,8 +20,10 @@ app.get("/diec", (req,res)=>{
 app.get("/ig/:username",(req, res)=>{
     console.log("hey it is here.")
     let {username}=req.params;
-    console.log(username);
-    res.render("home.ejs",{username});
+    const insta =require("./data.json")//using database to use and manuplate
+    const data =insta[username]
+    console.log(data);
+    res.render("home.ejs",{data});//used to send data from database
 })
 
 app.listen(3000);

@@ -1,12 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>hello bro how are you.<%= username %></h1>
+    <%- include("include/head.ejs"); %>
+    
     <%= 23523126354*14552 %>
     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Culpa officiis ipsam autem ab neque nesciunt, alias, minus aut magnam ea modi totam quasi fugiat rem mollitia excepturi accusantium! Iste, est?
     Quasi, laborum. Itaque atque enim magni consequuntur deserunt incidunt et, placeat voluptate earum provident cumque ab ullam minus eligendi vitae ducimus dicta mollitia! Quis impedit amet possimus hic qui suscipit?
@@ -19,5 +12,17 @@
     Nemo molestias, similique veritatis officia fugiat eveniet non eos laudantium at cumque autem ipsam fugit accusamus quo odio rem sapiente adipisci beatae praesentium tempora corporis ut delectus assumenda? Aperiam, laborum.
     Animi perferendis ut odio asperiores cumque, dolorum distinctio quidem eligendi magni nihil ipsa consequatur dolor voluptas eos, perspiciatis amet facilis iusto tenetur iure qui aspernatur culpa facere! Facilis, omnis laudantium?</p>
     <button>click me!</button>
+
+    name=<%=data.name%>
+    Followers=<%=data.followers%>&nbsp;&nbsp;&nbsp;&nbsp;
+    following=<%=data.Following%>
+   <% for(let post of data.posts){ %>
+    <img src="<%=post.image%>" alt="cat">
+    likes=<%=post.likes%>&nbsp;&nbsp;&nbsp;&nbsp;
+    comment=<%=post.comments%>
+    
+    <%}%>
+
+
 </body>
 </html>
