@@ -3,7 +3,7 @@ const app=express();
 const port =3000;
 
 app.use(express.urlencoded({ extended: true }));
-// app.use(express.json); // it is use only when user's post data in json format
+// app.use(express.json); git // it is use only when user's post data in json format
 
 app.get("/register",(req,res)=>{
     console.log("get is listenig")
