@@ -25,13 +25,15 @@ let posts=[{
     name:"yo hey",
     content:"hi",
 }];
-
+//main page
 app.get("/posts",(req,res)=>{
     res.render("index.ejs",{posts});
 });
+//create new post
 app.get("/posts/new",(req,res)=>{
     res.render("new.ejs",{})
 });
+//push nnew page
 app.post("/post",(req, res)=>{
     let {name, content}=req.body;
     let id =uuidv4();
@@ -40,12 +42,14 @@ app.post("/post",(req, res)=>{
     // res.send("done")
     res.redirect("/posts")
 });
+//view post
 app.get("/posts/:id/",(req, res)=>{
     let {id}=req.params;
     let post =posts.find((p)=> id===p.id);
     console.log(id,post)
     res.render("id.ejs",{post})  
 });
+//patch (update) post
 app.patch("/posts/:id",(req,res)=>{
     let {id}=req.params;
     let newContent=req.body.content;
@@ -55,13 +59,14 @@ app.patch("/posts/:id",(req,res)=>{
     post.content=newContent;
     res.redirect("/posts")
 });
+//push edit in  post
 app.get("/posts/:id/edit",(req, res)=>{
     let {id}=req.params;
     let post =posts.find((p)=> id===p.id);
     console.log(id,post)
     res.render("edit.ejs",{post})  
 });
-
+//delete post
 app.delete("/posts/:id/",(req, res)=>{
     let {id}=req.params;
     posts =posts.filter((p)=> id!==p.id);
