@@ -1,0 +1,108 @@
+body{
+    font-family: "Plus Jakarta Sans" !important;
+    min-height:  100vh;
+    display: flex;
+    flex-direction: column;
+    
+}
+.container{
+    flex: 1;
+}
+
+.brand{
+    color: rgb(255, 56, 92);
+    font-size: 2.2rem;
+}
+.brname{
+    color: rgb(255, 56, 92);
+    font-weight: 650; 
+    font-size: 1.5rem;
+    padding-bottom: .2rem;
+}
+.navbar{
+    height: 5rem;
+    font-size: 1.1rem;
+}
+/* footer */
+.f-link a , .f-infoSocial{
+    text-decoration: none ; 
+    color: black;
+    padding-left: .5rem;
+}
+.f-infoSocial i{
+    padding-left: .2rem;
+    font-size: 1.2rem;
+}
+.f-link a:hover{
+    text-decoration: underline ; 
+    color: black;
+
+}
+.f-info{
+    display: flex;
+    flex-direction: column;
+   
+    /* flex-wrap: nowrap; */
+    text-align: center;
+    background-color: #dddddd;
+    /* position: relative;   by me
+    bottom: 0% !important; */
+  
+}
+.f-link,.f-info,.f-company{
+    width: 100%;
+    padding: .8% 0;
+}
+
+/*index*/
+/* #show{
+    all:unset;
+} */
+
+.card{
+    border: none !important;
+    margin-bottom: 2.8rem !important;
+    width: 25% !important;
+}
+.col{
+    margin-right: auto;
+}
+.card-img-top{
+    border-radius: 1rem !important;
+    width: 100% !important;
+    height: 20rem !important;
+    object-fit: cover !important;
+}
+.card-body{
+    padding: 0 !important;
+}
+.card-text{
+    padding: .8rem 0 0 .3rem;
+}
+.show{
+    color: black !important;
+    text-decoration: none !important;
+}
+/* .card-img-top{
+    opacity: 1;
+}
+.card-img-top:hover{
+    opacity: .9;
+} */
+
+.card-img-overlay{
+    opacity: 0;
+}
+.card-img-overlay:hover{
+    opacity: .2;
+    background-color: white;
+}
+.fweight{
+font-weight: 700;
+}
+/* show  */
+.btn-show{
+display: flex;
+flex-direction: row;
+
+}
