@@ -20,6 +20,7 @@
                 <p class="date">On <%= chat.created.toString().split(" ").splice(1,3).join(" ") %></p>
                 <hr>
                 <div class="to"><p>To : <%= chat.to %></p> </div><br>
+                <a href="/chat/<%= chat._id %>/edit"><button>show</button></a>
                 <form action="/chat/<%=chat._id%>/delete?method=Delete" method="post"><button>Delete</button></form>
             </div>
             

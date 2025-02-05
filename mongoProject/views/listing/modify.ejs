@@ -8,34 +8,34 @@
                 <form action="/listing/<%= listid._id %>/?_method=put" method="post" class="needs-validation" novalidate>
                     <div class="mb-0">
                         <label class="form-label" for="title">Title:</label>
-                        <input required class="form-control" type="text" name="listings[title]" id="title"
+                        <input required class="form-control" type="text" name="listing[title]" id="title"
                             value='<%= listid.title %>'>
                         <div class="valid-feedback">title is used to be unique</div>
                         <div class="invalid-feedback">title is invalid</div>
                     </div>
                     <div class="mb-0">
                         <label class="form-label" for="Description">Description :</label>
-                        <textarea required class="form-control" type="text" name="listings[description]"
+                        <textarea required class="form-control" type="text" name="listing[description]"
                             id="description"> <%= listid.description %></textarea>
                         <div class="valid-feedback">title is used to be unique</div>
                         <div class="invalid-feedback">title is invalid</div>
                     </div>
                     <div class="mb-0">
                         <label class="form-label" for="image">Image:</label>
-                        <textarea required type="text" name="listings[image]" id="image" rows="5" cols="59"><%= listid.image %></textarea> 
+                        <textarea required type="text" name="listing[image]" id="image" rows="5" cols="59"><%= listid.image %></textarea> 
                         <div class="valid-feedback">image URL is used to be unique</div>
                         <div class="invalid-feedback">image URL is invalid</div>
                     </div>
                     <div class="mb-0">
                         <label class="form-label" for="Price">Price:</label>
-                        <input required class="form-control" type="number" name="listings[price]" id="price"
+                        <input required class="form-control" type="number" name="listing[price]" id="price"
                             value='<%= listid.price %>'>
                         <div class="valid-feedback">price</div>
                         <div class="invalid-feedback">price is invalid</div>
                     </div>
                     <div class="mb-0">
                         <label class="form-label" for="Location">Location</label>
-                        <input required class="form-control" type="text" name="listings[locationl]" id="location"
+                        <input required class="form-control" type="text" name="listing[location]" id="location"
                             value='<%= listid.location %>'>
                         <div class="valid-feedback">location is used to be accurate</div>
                         <div class="invalid-feedback">location is invalid</div>
