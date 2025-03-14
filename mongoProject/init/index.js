@@ -1,5 +1,6 @@
 const mongoose=require('mongoose');
 const listing=require('../models/listing.js')
+const review=require('../models/review.js')
 const initdata=require('./sample.js')
 main()
 .then(()=>{
@@ -11,6 +12,7 @@ async function main()
 
 const initDB=async ()=>{
     await listing.deleteMany({});
+    initdata.data=initdata.data.map((obj)=>({...obj,owner:'67ace14506680560780d45a5'}))
     await listing.insertMany(initdata.data)
     console.log("data added sucesfully")
 }

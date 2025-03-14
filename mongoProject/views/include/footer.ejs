@@ -15,4 +15,24 @@
             <a href="http://">Company detail</a>
         </div>
     </div>
+
+
+    <div class="mediaFooter">
+        <nav class="navbar sticky-bottom FooterBottom ">
+          <div class="divider"><hr></div>
+
+            <div class="container-fluid FooterBotm">
+              <a href="#"><i class="fa-solid fa-magnifying-glass"></i><p>Explore</p></a>
+              <a href="#"><i class="fa-regular fa-heart"></i><p>Whishlist</p></a>
+              
+              <% if(userlog){ %> 
+                <!--  here userlog is initializ in app.js which userlog use to know for user is log in or logout  -->
+                <a href="/listing/user/logout"><i class="fa-regular fa-circle-user"></i><p>LogOut</p></a>
+              <%}%>
+              <% if(!userlog){ %>
+                <a href="/listing/user/login"><i class="fa-regular fa-circle-user"></i><p>LogIn</p></a>
+              <%}%>
+            </div>
+          </nav>
+    </div>
 </footer>

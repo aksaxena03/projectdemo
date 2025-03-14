@@ -2,100 +2,74 @@ const express=require('express')
 const router=express.Router()
 const listing = require('../models/listing.js')
 const asyncwrap = require('../utils/asyncwrap.js')
-const { listingSchema } = require('../schema.js')
 const expressError = require('../utils/expressError.js')
+const flash=require('connect-flash')
+const {isLoggedin,validatedetail,isowner}=require('../utils/middleware.js')
+const listingController=require("../controllers/listing.js");
+
+const multer = require('multer');
+const { storage } = require('../cloudConfig.js');
+const upload = multer({ storage: storage });
 
 //middleware=>{validate all data or entries of required block 
 // to prevent server crash}
-const validatedetail = (req, res, next) => {
-    let { error } = listingSchema.validate(req.body)
-    if (error) {
-        let errMsg = error.details.map((element) => element.message).join(", ");
-        // console.log(error)
-        // console.log(errMsg)
-        throw new expressError(errMsg, 401)
-    } else {
-        next();
-    }
-}
+
 
 //home page
-router.get('/', asyncwrap(async (req, res) => {
-    const data = await listing.find({});
-    res.render('./listing/index.ejs', { data })
-}))
+router.route('/')
+    .get( asyncwrap(listingController.index))
+    .post(isLoggedin,upload.single('listing[image]'),validatedetail,asyncwrap(listingController.newListingDb))
+    // .post(upload.single('listing[image]'),(req,res)=>{
+    //     console.log(req)
+    // res.send(req.file)
+    // });
+
+
+
 //new rout
-router.get('/new', (req, res) => {
-    // res.send("working newq")
-    res.render("./listing/newfo.ejs")
-})
+router.get('/new', isLoggedin,(listingController.newListing))
 //show route
-router.get('/:id', asyncwrap(async (req, res) => {
-    // if (!req.body.listing) {
-    //     throw new expressError(401, "page not found")
-    // } 
-    const { id } = req.params
-    // console.log(id)
-    const listid = await listing.findById(id).populate("reviews")
-    // console.log(listid)
-    res.render('./listing/show.ejs', { listid })
-
-}))
-
-
+router.get('/:id', asyncwrap(listingController.showListing))
 //update route
-router.get('/:id/edit', asyncwrap(async (req, res) => {
-    let { id } = req.params;
-    const listid = await listing.findById(id);
-    // console.log(listid)
-    res.render('./listing/modify.ejs', { listid });
-}))
+router.get('/:id/edit',isLoggedin, asyncwrap(listingController.updateListingRender))
 //update in mongo sql
-router.put('/:id',validatedetail,asyncwrap(async (req, res) => {
-    let { id } = req.params;
-    // console.log(id,req.body ,req.body.listings)
-    // // let newlisting={...req.body.listings};
-    // console.log(newlisting)
-    const am=await listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true, runValidators: true });
-    // console.log(am)
-    res.redirect(`/listing/${req.params.id}`);
-}))
+router.put('/:id',isowner,upload.single('listing[image]'),validatedetail,asyncwrap(listingController.updateListing))
+//search
+router.post('/search/', asyncwrap(async (req, res) => {
+    let place= req.body.place
+    if (!req.body.place || Object.keys(req.body.place).length === 0) {
+        req.flash("errMsg", "error: Search criteria required" );
+        return res.redirect('/listing')
+
+        // return res.status(400).json({ error: "Search criteria required" });
+    }
+    // Create search query
+    const searchQuery = {
+        $or: [
+            { location: { $regex: req.body.place, $options: 'i' } },
+            { country: { $regex: req.body.place, $options: 'i' } },
+            { title: { $regex: req.body.place, $options: 'i' } }
+        ]
+    };
+
+    // Find matching listings
+    let result = await listing.find(searchQuery);
+    console.log(result)
+    if (result.length===0) {
+        req.flash("errMsg", "error: No listing found");
+        let newRedirect =res.locals.redirectUrl ||'/listing'
+        return res.redirect(newRedirect)
+        // return res.status(404).json({ error: "No listing found" });
+    }
+    res.render("listing/search.ejs",{place, result})
+    
+}));
 
 
-
-
-//ADD USINGMONGO create
-router.post('/', validatedetail, asyncwrap(async (req, res) => {
-    // let {description:description,title:title,image:image,location:location,price:price}=req.body
-    //mine
-    // let am =["title","location","price"];
-    // for (const item of am) {
-    //     if(!req.body.item){throw new expressError(401,"data missing")}
-    //      {let newlisting = new listing(req.body.listing);
-    //         await newlisting.save();
-    //         res.redirect('/listing')} 
-
-
-    let newlisting = new listing(req.body.listing);
-    await newlisting.save();
-    res.redirect('/listing')
-
-
-
-}))
+//newfo=>ADD USINGMONGO create
+router.post('/', validatedetail, asyncwrap(listingController.newListingDb))
 
 //destroy route
-router.delete('/:id', asyncwrap(async (req, res) => {
-    let { id } = req.params; // console.log(id)
-    const delListing = await listing.findByIdAndDelete(id); //console.log(delListing.reviews.length)
-    
-    //    delete reviews with listing by me
-    // for (const item of delListing.reviews){
-    //     console.log(item)
-    //     const reviewDel = await review.deleteMany(item)
-        
-    // }
-    res.redirect("/listing");
-}))
+router.delete('/:id',isLoggedin,isowner, asyncwrap(listingController.destroyListing))
 
 module.exports=router;

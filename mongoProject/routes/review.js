@@ -4,44 +4,17 @@ const router=express.Router({mergeParams:true})
 const listing = require('../models/listing.js')
 const review = require('../models/review.js')
 const asyncwrap = require('../utils/asyncwrap.js')
-const { reviewSchema } = require('../schema.js')
-const expressError = require('../utils/expressError.js')
+const {isLoggedin,validateReviews,isReviewAuthor}=require('../utils/middleware.js')
 
-//middelware for backend to validate reviews
-const validateReviews = (req, res, next) => {
-    let { error } = reviewSchema.validate(req.body)
-    if (error) {
-        let errMsg = error.details.map((element) => element.message).join(", ");
-        // console.log(error)
-        // console.log(errMsg)
-        throw new expressError(401, errMsg)
-    } else {
-        next();
-    }
-}
+const reviewController=require('../controllers/review.js')
 
 
-//Review fetching
-router.post("/",  asyncwrap(async (req, res) => {
-    const listingsreview = await listing.findById(req.params.id);
-    console.log(req.params,listingsreview)
-    let newReview = new review(req.body.review);
-    listingsreview.reviews.push(newReview);
-    await newReview.save();
-    await listingsreview.save();
-    console.log(newReview)
-    res.redirect(`/listing/${req.params.id}`);
-}))
+
+//Review fetching form show ejs
+router.post("/",isLoggedin,validateReviews,asyncwrap(reviewController.createReview))
 
 //Delete rout for review
-router.delete("/:reviewId", asyncwrap(async (req, res) => {
-    let { id, reviewId } = req.params;
-    const listRvDel = await listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } })
-    //using new concept of pull which help to remove item from array
-    const reviewDel = await review.findByIdAndDelete(reviewId);
-    console.log(listRvDel, reviewDel)
-    res.redirect(`/listing/${req.params.id}`)
-}))
+router.delete("/:reviewId",isLoggedin,isReviewAuthor, asyncwrap(reviewController.destroyReview))
 
 module.exports=router;
 

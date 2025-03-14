@@ -5,7 +5,7 @@
             <div class="col col-md-6 offset-md-3 mb-5">
                 <h2>modify listing <%= listid.title %>
                 </h2>
-                <form action="/listing/<%= listid._id %>/?_method=put" method="post" class="needs-validation" novalidate>
+                <form action="/listing/<%= listid._id %>/?_method=put" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
                     <div class="mb-0">
                         <label class="form-label" for="title">Title:</label>
                         <input required class="form-control" type="text" name="listing[title]" id="title"
@@ -20,11 +20,18 @@
                         <div class="valid-feedback">title is used to be unique</div>
                         <div class="invalid-feedback">title is invalid</div>
                     </div>
-                    <div class="mb-0">
-                        <label class="form-label" for="image">Image:</label>
-                        <textarea required type="text" name="listing[image]" id="image" rows="5" cols="59"><%= listid.image %></textarea> 
-                        <div class="valid-feedback">image URL is used to be unique</div>
-                        <div class="invalid-feedback">image URL is invalid</div>
+                     <div class="image ">
+                     <img src="<%= originalImg %>" class="rounded offset-md-2 mb-3 mt-1">
+
+                     </div>
+                    <div class="mb-3  ">
+                        <div class="">   
+                            <label class="form-label" for="image">Image:</label>
+                            <input class="form-control" name="listing[image]" rows="1" id="image"
+                                 type="file"></input>
+                           
+                        </div>
+
                     </div>
                     <div class="mb-0">
                         <label class="form-label" for="Price">Price:</label>

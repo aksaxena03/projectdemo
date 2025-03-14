@@ -1,3 +1,9 @@
+if(process.env.NODE_ENV !="production"){
+    require('dotenv').config()
+    // console.log(process.env) // remove this after you've confirmed it is working
+
+}
+
 const express = require('express')
 const app = express();
 const mongoose = require('mongoose')
@@ -6,8 +12,19 @@ const methodOverride = require('method-override')
 const ejsmate = require('ejs-mate')
 const expressError = require('./utils/expressError.js')
 // const joi=require('joi')
-const Listing=require('./routes/listing.js');
-const reviews=require('./routes/review.js');
+
+const ListingRouter=require('./routes/listing.js');
+const reviewsRouter=require('./routes/review.js');
+const userRouter=require('./routes/user.js')
+
+const session = require('express-session');
+const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy=require("passport-local")
+const User=require('./models/user.js');
+
+
+
 
 app.set('views engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -21,20 +38,58 @@ async function main() {
     await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust")
 }
 
-
-app.get('/root', (req, res) => {
-    res.send('working')
-})
+const sessionop={
+   secret: "mysecret",
+   resave:false,
+   saveUninitialized:true,
+   cookie:{
+    expires:Date.now()+7*24*60*60*1000,
+    maxAges:7*24*60*60*1000,
+    httpOnly:true
+   }
+    
+}
+// app.get('/root', (req, res) => {
+//     res.send('working')
+// })
 
 app.get('/', (req, res) => {
-    res.send('working')
+    res.redirect("/listing")
 })
+app.use(session(sessionop));
+app.use(flash());
 
-app.use('/listing',Listing)
-app.use('/listing/:id/reviews',reviews)
+//passport middilware
+
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()))
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+
+
+app.use((req,res,next)=>{
+    res.locals.msgs=req.flash("msg")
+    res.locals.errMsgs=req.flash("errMsg")
+    res.locals.userlog=req.user;
+    next();
+})
+app.use('/listing',ListingRouter)
+app.use('/listing/:id/reviews',reviewsRouter)
+app.use('/listing/user',userRouter)
 
 
 
+
+// app.get('/demouser',async(req,res)=>{
+//     let fakeuser=new User({
+//         username:"akhil",
+//         email:'akhil@gmail.com'
+//     })
+//     const newuser= await User.register(fakeuser,'akhilsaxena')
+//     // await User.save()
+//     res.send(newuser)
+// })
 
 // app.get ('/listing',async (req,res)=>{
 //     const lis =new listing({
@@ -45,7 +100,7 @@ app.use('/listing/:id/reviews',reviews)
 //     res.send(lis)
 // })
 app.all("*", (req, res, next) => {
-    next(new expressError(500, "page not found"));
+    next(new expressError(500, "page not found"))
 })
 
 app.use((err, req, res, next) => {
@@ -54,4 +109,4 @@ app.use((err, req, res, next) => {
     // res.status(status).send(message);
     // res.send("<marquee><h2>somthing went wrong!</h2></marquee>")
 })
-app.listen(8080, () => { console.log("server listening") })
+app.listen(8080, () => { console.log("server 8080 is listening") })
