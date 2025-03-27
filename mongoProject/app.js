@@ -17,13 +17,14 @@ const ListingRouter=require('./routes/listing.js');
 const reviewsRouter=require('./routes/review.js');
 const userRouter=require('./routes/user.js')
 
+const Mongostore=require('connect-mongo')
 const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
 const LocalStrategy=require("passport-local")
 const User=require('./models/user.js');
 
-
+const mongodb_url=process.env.ATLASDB_URL; //password for mongodb
 
 
 app.set('views engine', 'ejs');
@@ -35,11 +36,20 @@ app.engine('ejs', ejsmate);
 app.use(express.static(path.join(__dirname, 'public')));
 main().then(() => { console.log('mongo connected') }).catch((e) => { console.log(e) });
 async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust")
+    await mongoose.connect(mongodb_url)// atlas database
 }
 
+const store = Mongostore.create({
+    mongoUrl: mongodb_url,
+    crypto:{
+        secret:process.env.SECRET
+    },
+   
+    touchAfter: 24 * 3600 //session log in timeout
+});
 const sessionop={
-   secret: "mysecret",
+   store:store, 
+   secret: process.env.SECRET,
    resave:false,
    saveUninitialized:true,
    cookie:{

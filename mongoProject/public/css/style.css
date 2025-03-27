@@ -5,9 +5,9 @@ body {
     display: flex;
     flex-direction: column;
 }
-.form-control {
+/* .form-control {
     width: 16rem !important;
-}
+} */
 
 button.btn.btn-outline-white.flex.btn-edit {
     margin-left: 0.5rem !important;
@@ -121,6 +121,9 @@ button.btn.btn-outline-white.flex.btn-edit {
 
 .fweight {
     font-weight: 700;
+}
+.fweight.row.row-md-2 {
+    padding: 0 20rem 0 0;
 }
 
 .btn-show {
@@ -253,7 +256,6 @@ button.btn.btn-outline-white.flex.btn-edit {
     font-size: 1.1rem;
     font-weight: 650;
 }
-
 .mediaFooter {
     display: none;
 }
@@ -274,6 +276,15 @@ button.btn.btn-outline-white.flex.btn-edit {
         padding: 0.4rem !important;
     }
 }
+
+
+@media (min-width: 768px) {
+    .col-md-6 {
+        flex: 1 0 auto !important;
+       
+        }
+}
+
 
 @media (max-width: 700px) {
     .mediaSeven {
