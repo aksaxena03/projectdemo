@@ -1,0 +1,38 @@
+{
+    "cat":{
+        "name":"cats",
+        "followers":3599,
+        "Following":5,
+        "posts":[
+            {
+                "image":"http",
+                "likes":399,
+                "comments":15
+            },
+            {
+                "image ":"https"
+                ,"likes":312,
+                "comments":123
+            }
+           
+        ]
+    },
+    "dog":{
+        "name":"dog",
+        "followers":3599,
+        "Following":5,
+        "posts":[
+            {
+                "image":"http",
+                "likes":399,
+                "comments":15
+            },
+            {
+                "image ":"https"
+                ,"likes":312,
+                "comments":123
+            }
+           
+        ]
+    }
+}
