@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "ts",
+			"path": "../../ts"
+		},
+		{
+			"name": "frontEnd",
+			"path": "."
+		}
+	],
+	"settings": {}
+}
