@@ -1,0 +1,7 @@
+{
+  "extends":"@repo/typescript-config/first.json",
+  "compilerOptions": {
+    "rootDir": "./src",                                 
+    "outDir": "./dist",  
+  }
+}

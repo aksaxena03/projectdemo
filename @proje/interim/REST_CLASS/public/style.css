@@ -1,0 +1,13 @@
+/* *{
+    margin: 0;
+} */
+h1{
+    color: maroon;
+}
+.post{
+    background-color: palevioletred;
+
+}
+.user{
+    font-style: italic;
+}

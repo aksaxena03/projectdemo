@@ -1,0 +1,17 @@
+.body{
+    margin-left: 10px;
+}
+.inner{
+    background-color: whitesmoke;
+    border-radius: 10px;
+    display: inline-block;
+    width: 25%;
+}
+.msg{
+    background-color: rgb(21, 87, 255);
+    border-radius: 10px;
+    padding: 0 15px;
+    color: aliceblue;
+    line-height: 35px;
+    width: max-content;
+}
