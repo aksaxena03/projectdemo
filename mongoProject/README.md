@@ -1,2 +1,0 @@
-# wonderlust
-learning project 
